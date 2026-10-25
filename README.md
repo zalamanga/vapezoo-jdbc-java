@@ -83,3 +83,7 @@ compose.yaml                MySQL demo
 ```
 
 Versi asal menjalankan query daftar dua kali dan tidak menutup koneksi, statement atau result set. Versi ini menjalankan satu query per pilihan dan memisahkan tampilan terminal dari akses database. Penanda JDBC read-only membantu menyatakan maksud koneksi; pembatasan izin `SELECT` tetap perlu diterapkan pada user database yang kamu gunakan.
+
+## Alur kode
+
+[Diagram alur, tanggung jawab file, dan batas penyimpanan](docs/CODE_FLOW.md).
