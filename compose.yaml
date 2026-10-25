@@ -1,0 +1,22 @@
+services:
+  db:
+    image: mysql:8.4
+    command: ['--performance-schema=OFF', '--max-connections=30', '--innodb-buffer-pool-size=64M']
+    mem_limit: 512m
+    environment:
+      MYSQL_DATABASE: vapezoo_categories
+      MYSQL_USER: category_reader
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Isi DB_PASSWORD pada .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Isi MYSQL_ROOT_PASSWORD pada .env}
+    ports: ['127.0.0.1:18807:3306']
+    volumes:
+      - categories:/var/lib/mysql
+      - ./database/001-schema.sql:/docker-entrypoint-initdb.d/001-schema.sql:ro
+    healthcheck:
+      test: [CMD-SHELL, 'MYSQL_PWD="$$MYSQL_PASSWORD" mysql --protocol=TCP --host=127.0.0.1 --user="$$MYSQL_USER" --database="$$MYSQL_DATABASE" --execute="SELECT COUNT(*) FROM category" --silent >/dev/null 2>&1']
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+volumes:
+  categories:
